@@ -1,0 +1,142 @@
+package pacote;
+import java.util.Scanner;
+class No {
+ int elemento;
+ No proxNo;
+ No antNo;
+
+ public No(int elemento) {
+ this.elemento = elemento;
+ this.proxNo = null;
+ this.antNo = null;
+ }
+}
+class ListaDuplamenteEncadeada {
+ No inicio;
+ No fim;
+
+ public ListaDuplamenteEncadeada() {
+ this.inicio = null;
+ this.fim = null;
+ }
+
+ public void inserirNoInicio(int elemento) {
+ No novoNo = new No(elemento);
+
+ if (inicio == null) {
+ inicio = novoNo;
+ fim = novoNo;
+ } else {
+ novoNo.proxNo = inicio;
+ inicio.antNo = novoNo;
+ inicio = novoNo;
+ }
+ }
+
+ public void inserirNoFim(int elemento) {
+ No novoNo = new No(elemento);
+
+ if (inicio == null) {
+ inicio = novoNo;
+ fim = novoNo;
+ } else {
+ novoNo.antNo = fim;
+ fim.proxNo = novoNo;
+ fim = novoNo;
+ }
+ }
+
+ public void removerElemento(int elemento) {
+ if (inicio == null) {
+ System.out.println("\nA lista está vazia. Não é possível remover elementos.");
+ return;
+ }
+
+ No atual = inicio;
+
+ while (atual != null) {
+ if (atual.elemento == elemento) {
+ if (atual == inicio) {
+ inicio = atual.proxNo;
+ if (inicio != null) {
+ inicio.antNo = null;
+ }
+ } else if (atual == fim) {
+ fim = atual.antNo;
+ fim.proxNo = null;
+ } else {
+ atual.antNo.proxNo = atual.proxNo;
+ atual.proxNo.antNo = atual.antNo;
+ }
+
+ System.out.println("\nElemento foi removido com sucesso!");
+ return;
+ }
+
+ atual = atual.proxNo;
+ }
+
+ System.out.println("\nElemento não foi encontrado na lista.");
+ }
+
+ public void imprimirLista() {
+ No atual = inicio;
+
+ System.out.println("A minha lista atual é:");
+
+ while (atual != null) {
+ System.out.print(atual.elemento + " ");
+ atual = atual.proxNo;
+ }
+
+ System.out.println();
+ }
+}
+public class ListaDuplaEncad{
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ int opcao, elemento;
+ ListaDuplamenteEncadeada lista = new ListaDuplamenteEncadeada();
+
+ do {
+ System.out.println("\nEscolha uma opção: ");
+ System.out.println("1 - Inserir elemento no início da lista");
+ System.out.println("2 - Inserir elemento no fim da lista");
+ System.out.println("3 - Remover elemento");
+ System.out.println("4 - Imprimir Lista");
+ System.out.println("0 - Sair");
+ System.out.print("Entre com o valor desejado: ");
+ opcao = scanner.nextInt();
+
+ switch (opcao) {
+ case 1:
+ System.out.print("Digite o elemento a ser inserido no início da lista: ");
+ elemento = scanner.nextInt();
+ lista.inserirNoInicio(elemento);
+ break;
+ case 2:
+ System.out.print("Digite o elemento a ser inserido no final da lista: ");
+ elemento = scanner.nextInt();
+ lista.inserirNoFim(elemento);
+ break;
+ case 3:
+ System.out.print("Digite o elemento a ser removido da lista: ");
+ elemento = scanner.nextInt();
+ lista.removerElemento(elemento);
+ break;
+ case 4:
+ lista.imprimirLista();
+ break;
+ case 0:
+ System.out.println("Até breve.\n");
+ break;
+ default:
+ System.out.println("Opção Inválida. Entre com um valor válido.\n");
+ break;
+ }
+
+ } while (opcao != 0);
+
+ scanner.close();
+ }
+}
